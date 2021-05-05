@@ -608,7 +608,6 @@ textarea{resize:vertical;overflow-y:auto}
    height: 100%;
    white-space: nowrap;
    display: flex;
-   padding-top: 3px;
 }
 
 #playNumTab::-webkit-scrollbar {display:none}
