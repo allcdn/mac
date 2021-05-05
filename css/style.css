@@ -608,8 +608,6 @@ textarea{resize:vertical;overflow-y:auto}
    height: 100%;
    white-space: nowrap;
    display: flex;
-   overflow-x: scroll;
-   overflow-y: hidden;
    padding-top: 3px;
 }
 
