@@ -143,7 +143,7 @@ var MAC={
     },
     'Qrcode':{
         'Init':function(){
-            $('.mac_qrcode').attr('src','//api.maccms.com/qrcode/index/w/150/h/150/url/' + MAC.Url);
+            $('.mac_qrcode').attr('src', maccms.path +'/index.php/qrcode/index.html?url='+ MAC.Url);
         }
     },
     'Shorten': {
@@ -155,7 +155,7 @@ var MAC={
         },
         'Get':function(url,call){
             url=url||location.href;
-            MAC.Ajax('//api.maccms.com/shorten/index/url/'+ encodeURIComponent(url),'get','jsonp','',function(r){
+            MAC.Ajax('//api.maccms.la/shorten/index/url/'+ encodeURIComponent(url),'get','jsonp','',function(r){
                 if (r.code == 1) {
                     if($('.mac_shorten').length>0) {
                         $('.mac_shorten').val(r.data.url_short);
@@ -456,25 +456,24 @@ var MAC={
                 }
             }
 
-            var html = '';
+            html = '<dl class="mac_drop_box mac_history_box" style="display:none;">';
+            html +='<dt><a target="_self" href="javascript:void(0)" onclick="MAC.History.Clear();">清空</a></dt>';
+
             if(jsondata.length > 0){
                 for($i=0; $i<jsondata.length; $i++){
-        
-                  html += `<li style="list-style:none;padding:0px;">
-                  <a href="${jsondata[$i].link}" target="_self" style="font-size:12px;text-decoration:none"><small>${$i+1}.</small>${jsondata[$i].name}</a>
-               </li>`
-
-
+                    if($i%2==1){
+                        html +='<dd class="odd">';
+                    }else{
+                        html +='<dd class="even">';
+                    }
+                    html +='<a href="'+jsondata[$i].link+'" class="hx_title">'+jsondata[$i].name+'</a></dd>';
                 }
             }else{
-                html +='<li style="list-style:none;">暂无浏览记录</li>';
+                html +='<dd class="hide">暂无浏览记录</dd>';
             }
-           
+            html += '</dl>';
 
-            $('.history-ul').after(html);
-
-
-
+            $('.mac_history').after(html);
             var h = $('.mac_history').height();
             var position = $('.mac_history').position();
             $('.mac_history_box').css({'left':position.left,'top':(position.top+h)});
@@ -515,12 +514,7 @@ var MAC={
             MAC.Cookie.Set('mac_history',jsonstr,this.Days);
         },
         'Clear': function(){
-         if(confirm('确定要情况播放记录吗')){
             MAC.Cookie.Del('mac_history');
-            alert('已清空观看记录')
-            location.reload();
-         }
-            
             $('.mac_history_box').html('<li class="hx_clear">已清空观看记录。</li>');
         },
     },
